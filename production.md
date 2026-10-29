@@ -13,7 +13,7 @@
 | Rango DHCP | `10.1.1.50-10.1.1.200` |
 | Lista WAN | `WAN-LIST` |
 | Lista LAN | `LAN` |
-| Servidor SSH | `IP-SINC12` (sinc12)|
+| Servidor SSH | `10.1.1.10` (sinc12)|
 | Puerto externo | TCP `23` (ssh)|
 | Puerto interno | TCP `22` (sinc12)|
 
@@ -234,7 +234,7 @@ Debe existir una sola regla equivalente de `masquerade` para la salida LAN hacia
 Crear la regla DST-NAT:
 
 ```routeros
-/ip firewall nat add chain=dstnat in-interface-list=WAN-LIST protocol=tcp dst-port=23 action=dst-nat to-addresses=IP-SINC12 to-ports=22 comment="SSH-externo-a-servidor-LAN"
+/ip firewall nat add chain=dstnat in-interface-list=WAN-LIST protocol=tcp dst-port=23 action=dst-nat to-addresses=10.1.1.10 to-ports=22 comment="SSH-externo-a-servidor-LAN"
 ```
 
 Verificar:
@@ -243,7 +243,7 @@ Verificar:
 /ip firewall nat print detail
 ```
 
-Esta regla cambia el destino del tráfico entrante TCP `23` hacia `IP-SIN12:22`.
+Esta regla cambia el destino del tráfico entrante TCP `23` hacia `10.1.1.10:22`.
 
 **Importante:** el servidor `SINC12` debe tener ena ip estatica.
 
@@ -285,7 +285,7 @@ Estas reglas controlan el tráfico que atraviesa el router hacia otros equipos.
 /ip firewall filter add chain=forward action=accept connection-state=established,related,untracked comment="FORWARD conexiones establecidas"
 /ip firewall filter add chain=forward action=drop connection-state=invalid comment="FORWARD descartar invalidas"
 /ip firewall filter add chain=forward action=accept in-interface-list=LAN out-interface-list=WAN-LIST comment="FORWARD LAN a WAN"
-/ip firewall filter add chain=forward action=accept in-interface-list=WAN-LIST protocol=tcp connection-nat-state=dstnat dst-address=IP-SIN12 dst-port=22 comment="FORWARD SSH redirigido"
+/ip firewall filter add chain=forward action=accept in-interface-list=WAN-LIST protocol=tcp connection-nat-state=dstnat dst-address=10.1.1.10 dst-port=22 comment="FORWARD SSH redirigido"
 /ip firewall filter add chain=forward action=drop comment="FORWARD bloquear resto"
 ```
 

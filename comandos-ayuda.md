@@ -1,3 +1,22 @@
+## Desactivar dhcp-client
+
+```bash
+/ip dhcp-client disable [find where interface=WAN]
+```
+
+- Asignar ip 
+
+```bash
+/ip address add address=192.168.168.10/24 interface=WAN
+```
+
+- gateway
+
+```bash 
+/ip route add dst-address=0.0.0.0/0 gateway=192.168.168.1
+```
+
+
 ## Setear dhcp-client
 
 ```bash

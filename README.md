@@ -51,3 +51,36 @@ Descargar ambos archivos desde WinBox y guardarlos en un lugar seguro.
 - Revisar las reglas de firewall según las necesidades de la red.
 - Monitorizar el consumo de ancho de banda y el estado del equipo.
 
+
+## Interfaces físicas y conexiones
+
+### WAN — TELEMATICA
+
+La conexión a Internet se recibe desde TELEMATICA por fibra óptica. La instalación prevista utiliza una ONT o terminal de fibra que entrega Ethernet al puerto `ether1` del MikroTik.
+
+- **Interfaz:** `ether1`
+- **Función:** WAN
+- **Dirección IP:** recibida por DHCP del equipo superior
+- **Ruta predeterminada:** recibida mediante DHCP
+
+La conexión directa de fibra al puerto SFP no está prevista por el momento.
+
+### LAN — Producción
+
+| Interfaz | Uso |
+|---|---|
+| `ether2` | Switch Ala Norte |
+| `ether3` | Switch Ala Sur |
+| `ether4` | Puerto LAN disponible |
+| `ether5` | Puerto LAN disponible |
+| `ether6`–`ether10` | Reservados; sin uso inicial |
+| `sfp1` | Reservado; sin uso inicial |
+
+Las interfaces `ether2`–`ether5` pertenecen al bridge `BR-LAN`, con dirección `10.1.1.1/24`.
+
+Los puertos reservados quedan fuera del bridge LAN mientras no se necesiten. Su estado administrativo debe verificarse en RouterOS.
+
+### Criterio de uso
+
+Los puertos reservados se documentan para facilitar el mantenimiento y las ampliaciones. Antes de habilitar uno, verificar su configuración, incorporarlo al bridge o asignarle la función que corresponda y revisar las reglas de seguridad.
+
